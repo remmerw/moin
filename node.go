@@ -4,7 +4,6 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 	_ "expvar"
-	"github.com/dgraph-io/badger/v2"
 	"github.com/ipfs/go-blockservice"
 	ds "github.com/ipfs/go-datastore"
 	blockstore "github.com/ipfs/go-ipfs-blockstore"
@@ -35,7 +34,6 @@ type Node struct {
 	Running           bool
 	Shutdown          bool
 	Listener          Listener
-	Badger            *badger.DB
 	DataStore         ds.Batching
 	PeerStore         peerstore.Peerstore
 	RecordValidator   record.Validator
@@ -54,22 +52,16 @@ type Listener interface {
 	AllowConnect(string) bool
 	Push(string, string)
 	Connected(string)
+	BlockPut(string, []byte)
+	BlockGet(string) []byte
+	BlockHas(string) bool
+	BlockSize(string) int
+	BlockDelete(string)
 }
 
-func NewNode(listener Listener, repoPath string) *Node {
-	return &Node{Listener: listener, RepoPath: repoPath, Running: false }
-}
-
-func (n *Node) OpenDatabase() error {
-
-	repodb, err := Create(n.RepoPath)
-	if err != nil {
-		return err
-	}
-	n.Listener.Info("Repo open...")
-	n.DataStore = repodb
-	n.Badger = repodb.DB
-	return nil
+func NewNode(listener Listener) *Node {
+	store := NewDatastore(listener)
+	return &Node{Listener: listener, DataStore: store, Running: false}
 }
 
 func (n *Node) Identity() error {

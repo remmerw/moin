@@ -4,7 +4,6 @@ go 1.13
 
 require (
 	github.com/benbjohnson/clock v1.0.3 // indirect
-	github.com/dgraph-io/badger/v2 v2.0.3
 	github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e // indirect
 	github.com/gopherjs/gopherjs v0.0.0-20190812055157-5d271430af9f // indirect
 	github.com/ipfs/go-bitswap v0.3.2
@@ -23,7 +22,6 @@ require (
 	github.com/ipfs/go-path v0.0.8
 	github.com/ipfs/go-unixfs v0.2.4
 	github.com/ipfs/interface-go-ipfs-core v0.4.0
-	github.com/jbenet/goprocess v0.1.4
 	github.com/libp2p/go-libp2p v0.13.0
 	github.com/libp2p/go-libp2p-connmgr v0.2.4
 	github.com/libp2p/go-libp2p-core v0.8.0
