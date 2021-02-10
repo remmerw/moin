@@ -171,13 +171,12 @@ func receiver(n *Node) {
 	}
 }
 
-
 func logs(ctx context.Context) {
 
 	logging.SetupLogging()
 	logging.SetDebugLogging()
 
-	w := os.Stdout;
+	w := os.Stdout
 
 	go func() {
 		defer w.Close()
@@ -187,7 +186,7 @@ func logs(ctx context.Context) {
 
 }
 
-func (n *Node) Daemon(agent string, ) error {
+func (n *Node) Daemon(agent string) error {
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -262,7 +261,7 @@ func (n *Node) Daemon(agent string, ) error {
 
 		n.Routing, err = ddht.New(
 			ctx, host,
-			dht.Concurrency(10),
+			dht.Concurrency(n.Concurrency),
 			dht.DisableAutoRefresh(),
 			dht.Mode(dht.ModeClient))
 
@@ -290,8 +289,6 @@ func (n *Node) Daemon(agent string, ) error {
 
 	n.Running = true
 	n.Shutdown = false
-
-
 
 	go receiver(n)
 	go connected(n, ctx)
